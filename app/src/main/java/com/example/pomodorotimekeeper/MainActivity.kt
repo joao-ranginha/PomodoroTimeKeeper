@@ -31,9 +31,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.InteropView
 import com.example.pomodorotimekeeper.ui.theme.PomodoroTimeKeeperTheme
 import kotlinx.coroutines.delay
 
@@ -64,13 +66,13 @@ fun PomodoroLayout(modifier: Modifier = Modifier) {
 @Composable
 fun TimerAndButton(modifier: Modifier = Modifier) {
 
-    var time by remember { mutableIntStateOf(60) }
+    var timeSeconds by remember { mutableIntStateOf(10) }
     var timePause by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = time, key2 = timePause) {
-        while (time > 0 && !timePause) {
+    LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
+        while (timeSeconds > 0 && !timePause) {
             delay(1000L)
-            time--
+            timeSeconds--
         }
     }
 
@@ -97,8 +99,10 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$time",
-            modifier = modifier
+            text = TimeDisplay(timeSeconds),
+            modifier = modifier,
+            fontSize = 100.sp,
+            fontFamily = FontFamily.Monospace
         )
         Spacer(modifier = modifier.height(100.dp))
         ElevatedButton(
@@ -111,15 +115,23 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
             )
         }
         ElevatedButton(
-            onClick = { time = 60 },
+            onClick = { timeSeconds = 300 },
             contentPadding = PaddingValues(1.dp),
             modifier = modifier
         ) {
             Text(
-                text = "reste"
+                text = "Reset"
             )
         }
     }
+}
+
+fun TimeDisplay(totalSeconds: Int): String  {
+
+    val min = (totalSeconds / 60).toString()
+    val sec = if ((totalSeconds % 60).toString() == "0") "00" else (totalSeconds % 60).toString()
+
+    return "$min:$sec"
 }
 
 
@@ -127,6 +139,14 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     PomodoroTimeKeeperTheme {
-        PomodoroLayout()
+        PomodoroTimeKeeperTheme {
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                PomodoroLayout()
+            }
+        }
     }
 }
