@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.InteropView
+import com.example.pomodorotimekeeper.resourcelocal.TotalTime
 import com.example.pomodorotimekeeper.ui.theme.PomodoroTimeKeeperTheme
 import kotlinx.coroutines.delay
 
@@ -66,23 +67,30 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PomodoroLayout(modifier: Modifier = Modifier) {
 
+    val x by remember {mutableStateOf(TotalTime())}
+
     Column(modifier = Modifier
         .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TimerAndButton()
-        TimeSelectMenus()
+        TimerAndButton(totalTime = x)
+        TimeSelectMenus(totalTime = x)
     }
 
 
 }
 
 @Composable
-fun TimerAndButton(modifier: Modifier = Modifier) {
+fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
 
-    var timeSeconds by remember { mutableIntStateOf(10) }
-    var timePause by remember { mutableStateOf(false) }
+    var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
+    var timePause by remember { mutableStateOf(true) }
+
+    if (timeSeconds == 0) {
+        timePause = true
+        timeSeconds = totalTime.pomodoroTime
+    }
 
     LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
         while (timeSeconds > 0 && !timePause) {
@@ -90,21 +98,6 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
             timeSeconds--
         }
     }
-
-
-    /*
-    var time by remember { mutableStateOf("") }
-    val timeCounter = object: CountDownTimer(300000, 1000) {
-
-        override fun onTick(millisUntilFinished: Long) {
-            time = (millisUntilFinished / 1000 / 60).toString()
-        }
-
-        override fun onFinish() {
-            var hey = "heççp"
-        }
-    }.start()
-*/
 
     Column(
         modifier = modifier
@@ -130,7 +123,8 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
             )
         }
         ElevatedButton(
-            onClick = { timeSeconds = 300 },
+            onClick = { timeSeconds = totalTime.pomodoroTime
+                        timePause = true },
             contentPadding = PaddingValues(1.dp),
             modifier = modifier
         ) {
@@ -144,7 +138,7 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun TimeSelectMenus(modifier: Modifier = Modifier) {
+fun TimeSelectMenus(totalTime: TotalTime, modifier: Modifier = Modifier) {
     var viewPomodoroMenu by remember { mutableStateOf(false) }
     var viewBreakMenu by remember { mutableStateOf(false) }
     Row(modifier = Modifier
@@ -161,9 +155,9 @@ fun TimeSelectMenus(modifier: Modifier = Modifier) {
                 expanded = viewPomodoroMenu,
                 onDismissRequest = { viewPomodoroMenu = false }) {
 
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text(text = "1000") }, onClick = { totalTime.pomodoroTime = 1000})
+                DropdownMenuItem(text = { Text(text = "300") }, onClick = { totalTime.pomodoroTime = 300 })
+                DropdownMenuItem(text = { Text(text = "60") }, onClick = { totalTime.pomodoroTime = 60 })
 
             }
         }
