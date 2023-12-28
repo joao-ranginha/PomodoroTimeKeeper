@@ -9,14 +9,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -39,6 +44,7 @@ import androidx.compose.ui.viewinterop.InteropView
 import com.example.pomodorotimekeeper.ui.theme.PomodoroTimeKeeperTheme
 import kotlinx.coroutines.delay
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +66,7 @@ class MainActivity : ComponentActivity() {
 fun PomodoroLayout(modifier: Modifier = Modifier) {
 
     TimerAndButton()
+    TimeSelectMenus()
 
 }
 
@@ -134,6 +141,37 @@ fun TimeDisplay(totalSeconds: Int): String  {
     return "$min:$sec"
 }
 
+@Composable
+fun TimeSelectMenus(modifier: Modifier = Modifier) {
+    var view by remember { mutableStateOf(false) }
+
+    Row(modifier = Modifier
+        .wrapContentSize()
+        .width(300.dp)
+        .background(Color.Yellow),
+        horizontalArrangement = Arrangement.SpaceBetween
+
+    ) {
+        Button(onClick = { view = true }) {
+            Text(text = "munu")
+        }
+
+        DropdownMenu(
+            expanded = view,
+            onDismissRequest = { view = false }) {
+
+            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+
+        }
+
+
+        Button(onClick = { println("98") }) {
+            Text(text = "mana")
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
