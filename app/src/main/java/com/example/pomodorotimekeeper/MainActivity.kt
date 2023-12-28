@@ -24,6 +24,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,8 +66,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PomodoroLayout(modifier: Modifier = Modifier) {
 
-    TimerAndButton()
-    TimeSelectMenus()
+    Column(modifier = Modifier
+        .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TimerAndButton()
+        TimeSelectMenus()
+    }
+
 
 }
 
@@ -133,42 +141,47 @@ fun TimerAndButton(modifier: Modifier = Modifier) {
     }
 }
 
-fun TimeDisplay(totalSeconds: Int): String  {
 
-    val min = (totalSeconds / 60).toString()
-    val sec = if ((totalSeconds % 60).toString() == "0") "00" else (totalSeconds % 60).toString()
-
-    return "$min:$sec"
-}
 
 @Composable
 fun TimeSelectMenus(modifier: Modifier = Modifier) {
-    var view by remember { mutableStateOf(false) }
-
+    var viewPomodoroMenu by remember { mutableStateOf(false) }
+    var viewBreakMenu by remember { mutableStateOf(false) }
     Row(modifier = Modifier
         .wrapContentSize()
-        .width(300.dp)
-        .background(Color.Yellow),
+        .width(300.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
     ) {
-        Button(onClick = { view = true }) {
-            Text(text = "munu")
+        Box {
+            OutlinedButton(onClick = { viewPomodoroMenu = true }) {
+                Text(text = "Pomodoro Time")
+            }
+            DropdownMenu(
+                expanded = viewPomodoroMenu,
+                onDismissRequest = { viewPomodoroMenu = false }) {
+
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+
+            }
         }
 
-        DropdownMenu(
-            expanded = view,
-            onDismissRequest = { view = false }) {
 
-            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-            DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+        Box {
+            OutlinedButton(onClick = { viewBreakMenu = true }) {
+                Text(text = "Break Time")
+            }
+            DropdownMenu(
+                expanded = viewBreakMenu,
+                onDismissRequest = { viewBreakMenu = false }) {
 
-        }
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
 
-
-        Button(onClick = { println("98") }) {
-            Text(text = "mana")
+            }
         }
     }
 }
@@ -187,4 +200,12 @@ fun GreetingPreview() {
             }
         }
     }
+}
+
+fun TimeDisplay(totalSeconds: Int): String  {
+
+    val min = (totalSeconds / 60).toString().padStart(2,'0')
+    val sec =  (totalSeconds % 60).toString().padStart(2,'0')
+
+    return "$min:$sec"
 }
