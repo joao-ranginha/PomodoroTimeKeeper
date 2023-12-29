@@ -84,53 +84,136 @@ fun PomodoroLayout(modifier: Modifier = Modifier) {
 @Composable
 fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
 
-    var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
+
     var timePause by remember { mutableStateOf(true) }
+    var currentPomodoro by remember { mutableStateOf(true) }
 
-    if (timeSeconds == 0) {
-        timePause = true
-        timeSeconds = totalTime.pomodoroTime
-    }
 
-    LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
-        while (timeSeconds > 0 && !timePause) {
-            delay(1000L)
-            timeSeconds--
+
+    if (currentPomodoro) {
+        var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
+        if (timeSeconds == 0) {
+            timePause = true
+            currentPomodoro = false
         }
-    }
 
-    Column(
-        modifier = modifier
-            .padding(10.dp)
-            .wrapContentSize(),
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = TimeDisplay(timeSeconds),
-            modifier = modifier,
-            fontSize = 100.sp,
-            fontFamily = FontFamily.Monospace
-        )
-        Spacer(modifier = modifier.height(100.dp))
-        ElevatedButton(
-            onClick = { timePause = !timePause },
-            contentPadding = PaddingValues(1.dp),
-            modifier = modifier
-        ) {
-            Text(
-                text = if (timePause) "Start" else "Stop"
-            )
+        LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
+            while (timeSeconds > 0 && !timePause) {
+                delay(1000L)
+                timeSeconds--
+            }
         }
-        ElevatedButton(
-            onClick = { timeSeconds = totalTime.pomodoroTime
-                        timePause = true },
-            contentPadding = PaddingValues(1.dp),
+
+        Column(
             modifier = modifier
+                .padding(10.dp)
+                .wrapContentSize(),
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(text = "Work")
             Text(
-                text = "Reset"
+                text = TimeDisplay(timeSeconds),
+                modifier = modifier,
+                fontSize = 100.sp,
+                fontFamily = FontFamily.Monospace
             )
+            Spacer(modifier = modifier.height(100.dp))
+            ElevatedButton(
+                onClick = { timePause = !timePause },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = if (timePause) "Start" else "Stop"
+                )
+            }
+            ElevatedButton(
+                onClick = {
+                    timeSeconds = totalTime.pomodoroTime
+                    timePause = true
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Reset"
+                )
+            }
+            OutlinedButton(
+                onClick = {
+                    currentPomodoro = !currentPomodoro
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Skip"
+                )
+            }
+        }
+    } else {
+        var timeSeconds by remember { mutableStateOf(totalTime.breakTime) }
+        if (timeSeconds == 0) {
+            timePause = true
+            currentPomodoro = true
+        }
+
+        LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
+            while (timeSeconds > 0 && !timePause) {
+                delay(1000L)
+                timeSeconds--
+            }
+        }
+
+        Column(
+            modifier = modifier
+                .padding(10.dp)
+                .wrapContentSize(),
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Break")
+            Text(
+                text = TimeDisplay(timeSeconds),
+                modifier = modifier,
+                fontSize = 100.sp,
+                fontFamily = FontFamily.Monospace
+            )
+            Spacer(modifier = modifier.height(100.dp))
+            ElevatedButton(
+                onClick = { timePause = !timePause },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = if (timePause) "Start" else "Stop"
+                )
+            }
+            ElevatedButton(
+                onClick = {
+                    timeSeconds = totalTime.breakTime
+                    timePause = true
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Reset"
+                )
+            }
+            OutlinedButton(
+                onClick = {
+                    currentPomodoro = !currentPomodoro
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Skip"
+                )
+            }
+
         }
     }
 }
