@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -215,6 +218,14 @@ fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
 fun TimeSelectMenus(totalTime: TotalTime, modifier: Modifier = Modifier) {
     var viewPomodoroMenu by remember { mutableStateOf(false) }
     var viewBreakMenu by remember { mutableStateOf(false) }
+
+    var pomodoroSelectedItem by remember { mutableStateOf("30MIN") }
+    var breakSelectedItem by remember { mutableStateOf("5MIN") }
+
+    fun IsSelected():@Composable ()->Unit {
+        return {Icon(imageVector = Icons.Rounded.Check, contentDescription = null)}
+    }
+
     Row(modifier = Modifier
         .wrapContentSize()
         .width(300.dp),
@@ -229,11 +240,28 @@ fun TimeSelectMenus(totalTime: TotalTime, modifier: Modifier = Modifier) {
                 expanded = viewPomodoroMenu,
                 onDismissRequest = { viewPomodoroMenu = false }) {
 
-                DropdownMenuItem(text = { Text(text = "1000") }, onClick = { totalTime.pomodoroTime = 1000})
-                DropdownMenuItem(text = { Text(text = "300") }, onClick = { totalTime.pomodoroTime = 300 })
-                DropdownMenuItem(text = { Text(text = "60") }, onClick = { totalTime.pomodoroTime = 60 })
-
-            }
+                    DropdownMenuItem(text = { Text(text = "45 min") },
+                        onClick = { totalTime.pomodoroTime = 2700; pomodoroSelectedItem = "45MIN" },
+                        trailingIcon = when (pomodoroSelectedItem) {
+                            "45MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
+                    DropdownMenuItem(text = { Text(text = "30 min") },
+                        onClick = { totalTime.pomodoroTime = 1800; pomodoroSelectedItem = "30MIN" },
+                        trailingIcon = when (pomodoroSelectedItem) {
+                            "30MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
+                    DropdownMenuItem(text = { Text(text = "25 min") },
+                        onClick = { totalTime.pomodoroTime = 1500; pomodoroSelectedItem = "25MIN" },
+                        trailingIcon = when (pomodoroSelectedItem) {
+                            "25MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
+                }
         }
 
 
@@ -245,10 +273,27 @@ fun TimeSelectMenus(totalTime: TotalTime, modifier: Modifier = Modifier) {
                 expanded = viewBreakMenu,
                 onDismissRequest = { viewBreakMenu = false }) {
 
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-                DropdownMenuItem(text = { Text(text = "hello") }, onClick = { /*TODO*/ })
-
+                    DropdownMenuItem(text = { Text(text = "10 min") },
+                        onClick = { totalTime.breakTime = 600; breakSelectedItem = "10MIN" },
+                        trailingIcon = when (breakSelectedItem) {
+                            "10MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
+                    DropdownMenuItem(text = { Text(text = "5 min") },
+                        onClick = { totalTime.breakTime = 300; breakSelectedItem = "5MIN" },
+                        trailingIcon = when (breakSelectedItem) {
+                            "5MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
+                    DropdownMenuItem(text = { Text(text = "3 min") },
+                        onClick = { totalTime.breakTime = 180; breakSelectedItem = "3MIN" },
+                        trailingIcon = when (breakSelectedItem) {
+                            "3MIN" -> IsSelected()
+                            else -> null
+                        }
+                    )
             }
         }
     }
