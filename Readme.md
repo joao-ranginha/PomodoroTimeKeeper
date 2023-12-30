@@ -86,8 +86,10 @@ var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
         }
 ```
 Usualy the code to define the UI is called to executed only once, until some variable being tracked
-by the UI is changed (like when you press a letter key, it realoads the UI to show the press key)
-
+by the UI is changed (like when you press a letter key, it reloads the UI to show the press key)
+LaunchedEffect() however provides a way to launch a side-effect in compose in a block called corout-
+ine that does not affect the recomposition of the UI. The total number of seconds is defined in
+`timeSeconds` and each second we subtract on from it, giving us ouw timer.
 
 
 
