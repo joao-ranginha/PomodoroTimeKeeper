@@ -14,5 +14,19 @@ You can also change the break time from 3,5 and 10 minutes, max at 10 minutes so
 of a long break is not there.
 You can reset, skip and stop the current timer.
 
-bbb
+In MainActivity.kt we define the logic of the application, using the JetPack Compose framework for
+android we build the app with @Composable functions which allows us to make our UI in a declarative
+way. For this i had to learn the Kotlin language and Jetpack Compose framework, i made use of the
+learning material from Android training courses (https://developer.android.com/courses).
 
+A Composable function is a section of your UI which itself is made of other composable functions
+with more specific functions such as: Text() which displays text on the screen
+Column() which arranges components within itself in a column
+and
+Button() which provides a button that executes a piece of code when clicked
+
+The timer is made by calling LaunchEffect() TODO:
+
+
+
+The Data Class TotalTime is used to take the data from Menus and give it to Timer TODO:
