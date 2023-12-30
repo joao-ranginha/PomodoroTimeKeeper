@@ -141,8 +141,55 @@ Column() {
             }
         }
 ```
+A `when` statement is used to switch between work mode and break mode, they contain the same logic
+but reference different `timeSeconds`.
+```
+when (mode) { 
+    "WORK" -> // work UI and logic
+    "BREAK" -> // break UI and logic
+}
+```
+Next is the menu to select the time of the work and break sections. Each menu is a button that calls
+a DropdownMenu()(a function provided with jetpack compose). `expanded = viewPomodoroMenu` is a Bool-
+ean value, when it's true the menu becomes visible when you click outside of the menu it becomes fa-
+lse and the menu disappears. 
+```
+Box {
+    OutlinedButton(onClick = { viewPomodoroMenu = true }) {
+        Text(text = "Pomodoro Time")
+    }
+    DropdownMenu(
+        expanded = viewPomodoroMenu,
+        onDismissRequest = { viewPomodoroMenu = false }) {
 
-
+            DropdownMenuItem(text = { Text(text = "45 min") },
+                onClick = { totalTime.pomodoroTime = 2700; pomodoroSelectedItem = "45MIN" },
+                trailingIcon = when (pomodoroSelectedItem) {
+                    "45MIN" -> IsSelected()
+                    else -> null
+                }
+            )
+            DropdownMenuItem(text = { Text(text = "30 min") },
+                onClick = { totalTime.pomodoroTime = 1800; pomodoroSelectedItem = "30MIN" },
+                trailingIcon = when (pomodoroSelectedItem) {
+                    "30MIN" -> IsSelected()
+                    else -> null
+                }
+            )
+            DropdownMenuItem(text = { Text(text = "25 min") },
+                onClick = { totalTime.pomodoroTime = 1500; pomodoroSelectedItem = "25MIN" },
+                trailingIcon = when (pomodoroSelectedItem) {
+                    "25MIN" -> IsSelected()
+                    else -> null
+                }
+            )
+        }
+```
+For `each DropdownMenuItem()` the `onClick` calls a piece of code inside when it's clicked.
+It changes the value of the data class instance `totalTime.pomodoroTime`, setting each to the corre-
+spondent amount of seconds according to the option. It also sets which selected item was clicked to
+render a check mark trailing icon on the clicked option.
+The same thing is done for the Break section time options.
 
 The `data class TotalTime` takes the data changed in TimeSelectMenus() and give it to TimerAndButton()
 ```
