@@ -26,7 +26,18 @@ and
 Button() which provides a button that executes a piece of code when clicked
 
 The timer is made by calling LaunchEffect() TODO:
+```
+var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
+        if (timeSeconds == 0) {
+            timePause = true
+            currentPomodoro = false
+        }
 
-
-
+        LaunchedEffect(key1 = timeSeconds, key2 = timePause) {
+            while (timeSeconds > 0 && !timePause) {
+                delay(1000L)
+                timeSeconds--
+            }
+        }
+```
 The Data Class TotalTime is used to take the data from Menus and give it to Timer TODO:
