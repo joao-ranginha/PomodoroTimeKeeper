@@ -95,6 +95,9 @@ LaunchedEffect() however provides a way to launch a side-effect in compose in a 
 ine that does not affect the recomposition of the UI. The total number of seconds is defined in
 `timeSeconds` and each second we subtract on from it, giving us ouw timer.
 
+Below will be a simplified version of the code to display the timer and it's controls buttons
+for Start/Stop Reset and Skip. Note the `Column()` function wich will display the elements inside it
+in a vertical fashion.
 
 ```
 Column() {
@@ -102,7 +105,6 @@ Column() {
             
             Text(
                 text = TimeDisplay(timeSeconds),
-                modifier = modifier,
                 fontSize = 100.sp,
                 fontFamily = FontFamily.Monospace
             )
@@ -111,8 +113,6 @@ Column() {
             
             ElevatedButton(
                 onClick = { timePause = !timePause },
-                contentPadding = PaddingValues(1.dp),
-                modifier = modifier
             ) {
                 Text(
                     text = if (timePause) "Start" else "Stop"
@@ -123,9 +123,7 @@ Column() {
                 onClick = {
                     timeSeconds = totalTime.pomodoroTime
                     timePause = true
-                },
-                contentPadding = PaddingValues(1.dp),
-                modifier = modifier
+                }
             ) {
                 Text(
                     text = "Reset"
@@ -135,9 +133,7 @@ Column() {
             OutlinedButton(
                 onClick = {
                     currentPomodoro = !currentPomodoro
-                },
-                contentPadding = PaddingValues(1.dp),
-                modifier = modifier
+                }
             ) {
                 Text(
                     text = "Skip"
