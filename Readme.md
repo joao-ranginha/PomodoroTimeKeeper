@@ -20,12 +20,57 @@ way. For this i had to learn the Kotlin language and Jetpack Compose framework, 
 learning material from Android training courses (https://developer.android.com/courses).
 
 A Composable function is a section of your UI which itself is made of other composable functions
-with more specific functions such as: Text() which displays text on the screen
-Column() which arranges components within itself in a column
-and
-Button() which provides a button that executes a piece of code when clicked
+with more specific functions such as: 
+```
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    
+}
+```
 
-The timer is made by calling LaunchEffect() TODO:
+Text() which displays text on the screen
+```
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello World"
+    )
+}
+```
+
+
+
+Column() which arranges components within itself in a column
+```
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    Column() {
+        Text(
+            text = "Hello"
+        )
+        Text(
+            text = "Hello"
+        )
+    }
+}
+```
+
+Button() which provides a button that executes a piece of code when clicked
+```
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    Column() {
+        Text(
+            text = "Hello"
+        )
+        Text(
+            text = "Hello"
+        )
+    }
+}
+```
+
+The timer is made by calling LaunchEffect()
 ```
 var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
         if (timeSeconds == 0) {
@@ -40,4 +85,10 @@ var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
             }
         }
 ```
+Usualy the code to define the UI is called to executed only once, until some variable being tracked
+by the UI is changed (like when you press a letter key, it realoads the UI to show the press key)
+
+
+
+
 The Data Class TotalTime is used to take the data from Menus and give it to Timer TODO:
