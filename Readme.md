@@ -19,6 +19,8 @@ android we build the app with @Composable functions which allows us to make our 
 way. For this i had to learn the Kotlin language and Jetpack Compose framework, i made use of the
 learning material from Android training courses (https://developer.android.com/courses).
 
+#### A basic overview
+
 A Composable function is a section of your UI which itself is made of other composable functions
 with more specific functions such as: 
 ```
@@ -70,6 +72,8 @@ fun MyApp(modifier: Modifier = Modifier) {
 }
 ```
 
+#### A more in depth view
+
 The timer is made by calling LaunchEffect()
 ```
 var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
@@ -92,5 +96,62 @@ ine that does not affect the recomposition of the UI. The total number of second
 `timeSeconds` and each second we subtract on from it, giving us ouw timer.
 
 
+```
+Column() {
+            Text(text = "Work")
+            
+            Text(
+                text = TimeDisplay(timeSeconds),
+                modifier = modifier,
+                fontSize = 100.sp,
+                fontFamily = FontFamily.Monospace
+            )
+            
+            Spacer(modifier = modifier.height(100.dp))
+            
+            ElevatedButton(
+                onClick = { timePause = !timePause },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = if (timePause) "Start" else "Stop"
+                )
+            }
+            
+            ElevatedButton(
+                onClick = {
+                    timeSeconds = totalTime.pomodoroTime
+                    timePause = true
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Reset"
+                )
+            }
+            
+            OutlinedButton(
+                onClick = {
+                    currentPomodoro = !currentPomodoro
+                },
+                contentPadding = PaddingValues(1.dp),
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Skip"
+                )
+            }
+        }
+```
 
-The Data Class TotalTime is used to take the data from Menus and give it to Timer TODO:
+
+
+The `data class TotalTime` takes the data changed in TimeSelectMenus() and give it to TimerAndButton()
+```
+data class TotalTime(
+    var pomodoroTime: Int = 30*60,
+    var breakTime: Int = 5*60
+)
+```
