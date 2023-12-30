@@ -87,7 +87,6 @@ fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
     if (currentPomodoro) {
         var timeSeconds by remember { mutableStateOf(totalTime.pomodoroTime) }
         if (timeSeconds == 0) {
-            timePause = true
             currentPomodoro = false
         }
 
@@ -137,6 +136,7 @@ fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
             OutlinedButton(
                 onClick = {
                     currentPomodoro = !currentPomodoro
+                    timePause = true
                 },
                 contentPadding = PaddingValues(1.dp),
                 modifier = modifier
@@ -149,7 +149,6 @@ fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
     } else {
         var timeSeconds by remember { mutableStateOf(totalTime.breakTime) }
         if (timeSeconds == 0) {
-            timePause = true
             currentPomodoro = true
         }
 
@@ -199,6 +198,7 @@ fun TimerAndButton(totalTime: TotalTime, modifier: Modifier = Modifier) {
             OutlinedButton(
                 onClick = {
                     currentPomodoro = !currentPomodoro
+                    timePause = true
                 },
                 contentPadding = PaddingValues(1.dp),
                 modifier = modifier
